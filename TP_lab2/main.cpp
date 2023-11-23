@@ -3,6 +3,7 @@
 using namespace std;
 
 //menu + proverki
+//git one commit
 class Sign
 {
 	string name;
