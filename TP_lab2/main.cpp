@@ -1,230 +1,124 @@
-#include<iostream>
-#include<string>
+#include"Signr.h"
+#include"Keeper.h"
 using namespace std;
 
-//menu + proverki
-//git one commit
-class Sign
-{
-	string name;
-	string surname;
-	string znak;
-	int dat[3];
-public:
-	Sign()
-	{
-		name = "Dany";
-		surname = "Skakun";
-		znak = "bliznec";
-		copyDat(13, 6, 2003);
-
-	}
-	Sign operator = (const Sign & other)
-	{
-		this->name = other.name;
-		this->surname = other.surname;
-		this->znak = other.znak;
-		for (int i = 0; i < 3;i++)
-		{
-			dat[i] = other.dat[i];
-		}
-		
-		return*this;
-	}
-	string getZnak()
-	{
-		return znak;
-	}
-	int getMonth()
-	{
-		return dat[1];
-	}
-
-	void copyDat(int a,int b,int  c)
-	{
-		dat[0] = a;
-		dat[1] = b;
-		dat[2] = c;
-	}
-	void razdel(string data)
-	{
-		string buf ="";
-		int j = 0;
-		for (int i = 0; i < data.size(); i++)
-		{
-			buf.append(string(1,data[i]));
-			if (data[i] == '.')
-			{
-				dat[j]=stoi(buf);
-				j++;
-				buf = "";
-			}
-		}
-		dat[j] = stoi(buf);
-	}
-	void inic()
-	{
-		string buf;
-		cout << "input name" << endl;
-		getline(cin, buf);
-		name = buf;
-
-		cout << "input surname" << endl;
-		getline(cin, buf);
-		surname = buf;
-
-		cout << "input znak" << endl;
-		getline(cin, buf);
-
-		znak = buf;
-
-		cout << "input date (format 20.13.2000)" << endl;
-		getline(cin, buf);
-		razdel(buf);
 
 
-	}
-	void show()
-	{
-		cout << name << ' ' << surname << endl;
-		cout << znak << endl;
-		for (int i = 0; i < 3; i++)
-		{
-			cout << dat[i] << ' ';
-		}
-		cout <<endl;
-	}
 
-
-};
-
-class keeper {
-
-	Sign* array;
-	int n;
-public:
-	keeper()
-	{
-		n = 2;
-		array = new Sign[n];
-	}
-
-	keeper(const keeper& other)
-	{
-		this->n = other.n;
-		this->array = new Sign[n];
-
-		for (int i = 0; i < n; i++)
-		{
-			array[i] = other.array[i];
-		}
-	}
-	void showAll()
-	{
-		for (int i = 0; i < n; i++)
-		{
-			array[i].show();
-		}
-	}
-	keeper operator ++(int val)
-	{
-		keeper buf(*this);
-		delete[] array;
-		n++;
-		array = new Sign[n];
-
-		for (int i = 0; i < n - 1; i++)
-		{
-			array[i] = buf.array[i];
-		}
-		array[n - 1].inic();
-		delete[] buf.array;
-		return *this;
-	}//proverka
-
-	keeper operator - (int val)
-	{
-		
-		keeper buf(*this);
-
-		n--;
-		delete[] array;
-		array = new Sign[n];
-		int j = 0;
-		for (int i = 0; i < n; i++)
-		{
-			if (i == val-1){j++;}
-			array[i] = buf.array[j];
-		
-			j++;
-		}
-		return *this;
-	}
-	void outputZnak()
-	{
-		string buf="";
-		keeper one(*this);
-		int i = 0;
-		string bufZnak;
-		for(int i =0;i<n;i++)
-		{
-			bufZnak = one.array[i].getZnak();
-			if (buf.find(bufZnak))
-			{
-
-				buf.append(bufZnak);
-				buf.append(" ");
-
-				for (int j = 0; j < n; j++)
-				{
-					if ((one.array[j].getZnak() == bufZnak))
-					{
-						one.array[j].show();
-					}
-				}
-			}
-			
-		}
-	}
-
-	void mecych()
-	{
-		string buf;
-		int month;
-		int a=0;
-		cout << "input number month";
-		getline(cin, buf);
-		month = stoi(buf);
-		for (int i = 0; i < n; i++)
-		{
-			if (array[i].getMonth() == month)
-			{
-				array[i].show();
-				a++;
-			}
-		}
-		if (a == 0)
-		{
-			cout << "nothigth informashion" << endl;
-		}
-
-	}
-};
 int main()
 {
 	keeper one;
+	setlocale(LC_ALL, "");
 
+	int z;
+	string buf;
+	char mennu[8][40];
 
-	one.showAll();
-	one++;
-	one++;
-	one++;
-	one++;
+	strcpy(mennu[0], "Option: \n");
+	strcpy(mennu[1], "1) Добавить элемент  \n");
+	strcpy(mennu[2], "2) Удалить элемент   \n");
+	strcpy(mennu[3], "3) Показать \n");
+	strcpy(mennu[4], "4) Вывод по месяцу  \n");
+	strcpy(mennu[5], "5) Сортировка по знаку зодиака\n");
+	strcpy(mennu[6], "6) Редактирование \n");
+	strcpy(mennu[7], "0) Выйти \n");
+	HANDLE hStdout;
+	WORD foregroundColor;
+	WORD foregroundColor1;
+	WORD backgroundColor;
+	foregroundColor = FOREGROUND_INTENSITY |
+		FOREGROUND_GREEN |
+		FOREGROUND_BLUE;
+	foregroundColor1 = FOREGROUND_INTENSITY |
+		FOREGROUND_BLUE |
+		FOREGROUND_GREEN |
+		FOREGROUND_RED;
+	backgroundColor = 0;
+	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	int flag = 1;
+	char s = 0;
+	int bb;
+	while (1)
+	{
+		flag = 1;
+		s = 0;
+		while (s != 13)
+		{
+			system("cls");
+			if (s == -32) { s = _getch(); }
+			if (s == 72)
+			{
+				if (flag == 1)
+					flag = 7;
+				else
+					flag--;
+			}
+			if (s == 80)
+			{
+				if (flag == 7)
+				{
+					flag = 1;
+				}
+				else
+					flag++;
+			}
+			for (int i = 0; i < 8; i++)
+			{
+				if (i == flag)
+				{
+					printf(" ");
+					SetConsoleTextAttribute(hStdout, foregroundColor | backgroundColor);
+					printf(" %s", mennu[i]);
 
-	cout << endl;
-
-	cout <<"HH"<< endl;
-	one.outputZnak();
-	cout <<"HH"<< endl;
-	one.showAll();
+					SetConsoleTextAttribute(hStdout, foregroundColor1);
+				}
+				else
+					printf("%s", mennu[i]);
+			}
+			s = _getch();
+		}
+		switch (flag) {
+		case 1:
+		{
+			one++;
+			break;
+		}
+		case 2:
+		{
+			one.showAll();
+			cout << "Какой элемент удалить?" << endl;
+			getline(cin, buf);
+			bb=stoi(buf);
+			one - bb;
+			break;
+		}
+		case 3:
+		{
+			one.showAll();
+			system("pause");
+			break;
+		}
+		case 4:
+		{
+			one.mecych();
+			system("pause");
+			break;
+		}
+		case 5:
+		{
+			one.outputZnak();
+			system("pause");
+			break;
+		}
+		case 6:
+		{
+			one.redak();
+			break;
+		}
+		case 7: {return 0; break; }
+		}
+	}
 }
+
+
+

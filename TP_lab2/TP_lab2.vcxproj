@@ -127,7 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Keeper.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="operatoIn.cpp" />
+    <ClCompile Include="operatorOut.cpp" />
+    <ClCompile Include="Sign.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Keeper.h" />
+    <ClInclude Include="Signr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
